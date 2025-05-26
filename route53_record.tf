@@ -18,6 +18,18 @@ resource "aws_route53_record" "A_quibs" {
   zone_id = aws_route53_zone.quibs.zone_id
 }
 
+resource "aws_route53_record" "admin_quibs" {
+  zone_id = aws_route53_zone.quibs.zone_id
+  name    = "admin.quibs.com"
+  type    = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.admin_panel.domain_name
+    zone_id                = "Z2FDTNDATAQYW2"
+    evaluate_target_health = false
+  }
+}
+
 resource "aws_route53_record" "MX_quibs" {
   name    = "quibs.com"
   records = ["10 mail.s463.sureserver.com"]
