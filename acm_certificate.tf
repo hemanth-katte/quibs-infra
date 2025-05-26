@@ -8,4 +8,11 @@ resource "aws_acm_certificate" "quibs_cert" {
 
   subject_alternative_names = ["quibs.com"]
   validation_method         = "EMAIL"
+  tags = merge(
+    local.default_tags,
+    {
+      "Description" = "ACM certificate for quibs.com"
+      "SpecialNote" = "Imported from ClickOps via Terraformer"
+    }
+  )
 }
