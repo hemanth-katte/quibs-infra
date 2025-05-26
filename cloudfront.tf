@@ -10,6 +10,8 @@ resource "aws_cloudfront_distribution" "admin_panel" {
   enabled             = true
   default_root_object = "index.html"
 
+  aliases = ["admin.quibs.com"]
+
   origin {
     domain_name = aws_s3_bucket.admin_panel.bucket_regional_domain_name
     origin_id   = "s3-admin-panel"
@@ -39,7 +41,9 @@ resource "aws_cloudfront_distribution" "admin_panel" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn      = aws_acm_certificate.quibs_admin_cert.arn
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1.2_2021"
   }
 
   tags = merge(
