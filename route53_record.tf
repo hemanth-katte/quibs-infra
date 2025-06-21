@@ -64,7 +64,7 @@ resource "aws_route53_record" "TXT_SPF_quibs" {
 
 resource "aws_route53_record" "cert_validation" {
   for_each = {
-    for dvo in aws_acm_certificate.quibs_admin_cert.domain_validation_options : "${dvo.domain_name}" => {
+    for dvo in aws_acm_certificate.quibs_admin_cert.domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
       type   = dvo.resource_record_type
       record = dvo.resource_record_value
