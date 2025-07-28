@@ -1,19 +1,3 @@
-resource "aws_ebs_volume" "quib_admin" {
-  availability_zone = "us-east-1c"
-  size              = 20
-  type              = "gp2"
-  snapshot_id       = "snap-02eb3fc532839ce94"
-  tags = merge(
-    local.default_tags,
-    {
-      Name = "VolumeFor-i-066c8327743f4f02d"
-    }
-  )
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
 resource "aws_ebs_volume" "quib_production" {
   availability_zone = "us-east-1a"
   size              = 30
@@ -44,13 +28,6 @@ resource "aws_ebs_volume" "quib" {
   lifecycle {
     prevent_destroy = true
   }
-}
-
-resource "aws_volume_attachment" "quib_admin_attach" {
-  device_name  = "/dev/sda1"
-  volume_id    = aws_ebs_volume.quib_admin.id
-  instance_id  = "i-066c8327743f4f02d"
-  force_detach = false
 }
 
 resource "aws_volume_attachment" "quib_production_attach" {
