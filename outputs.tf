@@ -26,10 +26,6 @@ output "aws_route53_zone_quibs_id" {
   value = aws_route53_zone.quibs.id
 }
 
-output "aws_acm_certificate_quibs_cert_id" {
-  value = aws_acm_certificate.quibs_cert.id
-}
-
 output "aws_instance_quib_prod_id" {
   value = aws_instance.quib_prod.id
 }
