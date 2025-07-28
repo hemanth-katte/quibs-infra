@@ -13,8 +13,3 @@ resource "aws_acm_certificate" "quibs_admin_cert" {
     create_before_destroy = true
   }
 }
-
-resource "aws_acm_certificate_validation" "quibs_cert_validation" {
-  certificate_arn         = aws_acm_certificate.quibs_admin_cert.arn
-  validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
-}
