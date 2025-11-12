@@ -57,6 +57,11 @@ resource "aws_instance" "quib_prod" {
     encrypted             = false
     volume_size           = 30
     volume_type           = "gp2"
+
+    tags = {
+      Backup = "QuibProduction"
+    }
+
   }
 
   security_groups   = ["launch-wizard-4"]
@@ -79,4 +84,36 @@ resource "aws_instance" "quib_prod" {
 
   tenancy                = "default"
   vpc_security_group_ids = ["sg-0e37fcbbb1d58cf85"]
+}
+
+resource "aws_dlm_lifecycle_policy" "quib_root_ebs_daily_backup" {
+  description        = "Daily snapshot for QuibProduction instance EBS"
+  state              = "ENABLED"
+  execution_role_arn = aws_iam_role.dlm_role.arn
+
+  policy_details {
+    resource_types = ["VOLUME"]
+
+    target_tags = {
+      Backup = "QuibProduction"
+    }
+
+    schedule {
+      name = "daily-backup"
+
+      create_rule {
+        interval      = 24
+        interval_unit = "HOURS"
+        times         = ["02:00"] # UTC
+      }
+
+      retain_rule {
+        count = 7
+      }
+    }
+  }
+
+  tags = {
+    Name = "QuibProduction-daily-backup-policy"
+  }
 }
